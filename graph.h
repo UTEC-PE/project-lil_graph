@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <list>
+#include <queue>
 
 #include "edge.h"
 #include "disjoint.h"
+#include "my_priority_queue.h"
 
 using namespace std;
 
@@ -13,6 +15,12 @@ class Traits {
 	public:
 		typedef char N; //nombre del nodo
 		typedef int E;  //peso de la arista
+};
+template <typename G>
+struct orderbyrank {
+    bool operator() (Node<G>* const &a, Node<G>* const &b) {
+        return a->rank > b->rank;
+    }
 };
 
 template <typename Tr>
@@ -59,6 +67,7 @@ class Graph {
                 edge1->nodes[0] = node1;
                 edge1->nodes[1] = node2;
                 node1->edges.push_back(edge1);
+                edges.push_back(edge1);
                 if (!dir) {
                     node2->edges.push_back(edge1);
                 }
@@ -76,12 +85,11 @@ class Graph {
                 N name = (*ni)->getData();
                 disjointSet.makeSet(name,*ni);
             }
-            struct {
-                bool operator()(edge* a, edge* b) const {
-                    return a->getWeight() < b->getWeight();
-                }
-            } compare;
-            sort(edges.begin(),edges.end(), compare);
+            edges.sort([](edge* a, edge* b){
+                int w1 = a->getWeight();
+                int w2 = b->getWeight();
+                return w1 < w2;
+            });
             int mst_weight = 0, mst_edges =0, mst_i=0;
             ei = edges.begin();
             while( mst_i < edges.size() ) {
@@ -100,11 +108,38 @@ class Graph {
             return kruskal_edges;
         };
         void Prim(){
-            for(ni = nodes.begin(); ni != nodes.end(); ++ni){
-                (*ni)->rank = 999999;
+            /*priority_queue<node*,NodeSeq,orderbyrank<self>> cola;*/
+            my_priority_queue<node*,NodeSeq,orderbyrank<self>> cola_;
+            for(ni = nodes.begin(); ni != nodes.end(); ++ni) {
+                if (ni != nodes.begin()) (*ni)->rank = 999999;
+                else (*ni)->rank = 0;
                 (*ni)->parent = nullptr;
+                cola_.push(*ni);
+            }
+            while(!cola_.empty()) {
+                node* aux = cola_.top();
+                cola_.pop();
+                cola_.push(aux);
+                node* u = cola_.top();  //extract min node from queue
+                cola_.pop();
+                for(ei=u->edges.begin(); ei!=u->edges.end(); ++ei){
+                    node* v = (*ei)->nodes[1];
+                    if((*ei)->getWeight() < v->rank && cola_.find(v)){
+                        v->rank = (*ei)->getWeight();
+                        v->parent = u;
+                    }
+                }
             }
         }
+     /*   bool find_in_pqueue(node* node1,priority_queue<node*,NodeSeq,orderbyrank<self>> cola ){
+            auto first = priority_queue<node*,NodeSeq,orderbyrank<self>>::c.cbegin();
+            auto last = priority_queue<node*,NodeSeq,orderbyrank<self>>::c.cend();
+            while(first!=last){
+                if(*first == node1) return true;
+                ++first;
+            }
+            return false;
+        }*/
     private:
         NodeSeq nodes;
         NodeIte ni;

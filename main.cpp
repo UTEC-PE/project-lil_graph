@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
     a.addEdge('C','F',false, 8);
 
     a.Kruskal();
+    a.Prim();
 
     return 0;
 }
