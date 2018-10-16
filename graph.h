@@ -16,6 +16,7 @@ class Traits {
 		typedef char N; //nombre del nodo
 		typedef int E;  //peso de la arista
 };
+
 template <typename G>
 struct orderbyrank {
     bool operator() (Node<G>* const &a, Node<G>* const &b) {
@@ -107,8 +108,7 @@ class Graph {
             }
             return kruskal_edges;
         };
-        void Prim(){
-            /*priority_queue<node*,NodeSeq,orderbyrank<self>> cola;*/
+        NodeSeq Prim(){
             my_priority_queue<node*,NodeSeq,orderbyrank<self>> cola_;
             for(ni = nodes.begin(); ni != nodes.end(); ++ni) {
                 if (ni != nodes.begin()) (*ni)->rank = 999999;
@@ -130,16 +130,8 @@ class Graph {
                     }
                 }
             }
+            return nodes;
         }
-     /*   bool find_in_pqueue(node* node1,priority_queue<node*,NodeSeq,orderbyrank<self>> cola ){
-            auto first = priority_queue<node*,NodeSeq,orderbyrank<self>>::c.cbegin();
-            auto last = priority_queue<node*,NodeSeq,orderbyrank<self>>::c.cend();
-            while(first!=last){
-                if(*first == node1) return true;
-                ++first;
-            }
-            return false;
-        }*/
     private:
         NodeSeq nodes;
         NodeIte ni;

@@ -36,7 +36,7 @@ public:
     }
     node* findSet(char data) {
         return findSet(this->nodes[data]);
-    };
+    }
     node* findSet(node* node_){
         node* current = node_;
         while( current != current->parent){
@@ -44,8 +44,8 @@ public:
         }
         node_->parent = current;
         return current;
-    };
-    ~DisjointSet() {};
+    }
+    ~DisjointSet() {}
 };
 
 #endif //GRAFO_PROYECTO_DISJOINT_H

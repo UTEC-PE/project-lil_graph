@@ -8,6 +8,7 @@ class Node {
         typedef typename G::EdgeSeq EdgeSeq; //lista de aristas
 
         int rank;        //
+
         Node* parent;    //para kruskal y prim
 
         EdgeSeq edges;
