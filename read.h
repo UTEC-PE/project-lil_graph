@@ -10,6 +10,7 @@
  * no es necesario que la utilicen, podrían implementar su lector
  * desde su grafo o algún otro lado
  **/
+
 /*template <typename G>
 class Read {
 	typedef typename G::N N;

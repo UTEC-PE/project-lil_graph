@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 
     a.Kruskal();
     a.Prim();
+    a.print_path(a.find_node('A'), a.find_node('F'));
 
     return 0;
 }

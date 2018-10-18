@@ -41,6 +41,28 @@ class Graph {
             node* node1 =new node(data);
             nodes.push_back(node1);
         };
+        void addEdge(N data_1, N data_2, bool dir, E weight){
+            node* node1 = find_node(data_1);
+            node* node2 = find_node(data_2);
+
+            if(node1 && node2) {
+                edge* edge1 = new edge(weight, dir);
+                edge1->nodes[0] = node1;
+                edge1->nodes[1] = node2;
+                node1->edges.push_back(edge1);
+                edges.push_back(edge1);
+                if (!dir) {
+                    edge* edge2 = new edge(weight, true);
+                    edge2->nodes[0] = node2;
+                    edge2->nodes[1] = node1;
+                    node2->edges.push_back(edge2);
+                }
+            }
+        }
+        void deleteEdge(){
+        }
+        void deleteNode(N data){
+        }
         node* find_node(N data){
             ni = nodes.begin();
             for(;ni !=nodes.end(); ++ni){
@@ -58,25 +80,6 @@ class Graph {
                 }
             }
             return nullptr;
-        }
-        void addEdge(N data_1, N data_2, bool dir, E weight){
-            node* node1 = find_node(data_1);
-            node* node2 = find_node(data_2);
-
-            if(node1 && node2) {
-                edge* edge1 = new edge(weight, dir);
-                edge1->nodes[0] = node1;
-                edge1->nodes[1] = node2;
-                node1->edges.push_back(edge1);
-                edges.push_back(edge1);
-                if (!dir) {
-                    node2->edges.push_back(edge1);
-                }
-            }
-        }
-        void deleteEdge(){
-        }
-        void deleteNode(N data){
         }
         EdgeSeq Kruskal(){
             EdgeSeq kruskal_edges;
@@ -131,6 +134,43 @@ class Graph {
                 }
             }
             return nodes;
+        }
+
+        NodeSeq BFS(){
+            for(ni = nodes.begin(); ni != nodes.end(); ++ni){
+                (*ni)->parent = nullptr;
+                (*ni)->rank = 999999;
+                (*ni)->color="WHITE";
+            }
+            queue<node*> cola;
+            ni = nodes.begin();
+            (*ni)->parent = nullptr;
+            (*ni)->color = "GRAY";
+            (*ni)->rank = 0;
+            cola.push(*ni);
+            while(!cola.empty()){
+                node* u = cola.front();
+                cola.pop();
+                for(ei = u->edges.begin(); ei != u->edges.end(); ++ei) {
+                    node* v = (*ei)->nodes[1];
+                    if(v->color == "WHITE") {
+                        v->color = "GRAY";
+                        v->rank = u->rank + (*ei)->getWeight();
+                        v->parent = u;
+                        cola.push(v);
+                    }
+                }
+                u->color = "BLACK";
+            }
+        }
+        void print_path(node* s, node* e) {
+            if(s == e) cout<< s->getData() <<endl;
+            else if( e->parent == nullptr)
+                cout << "no path from "<< s->getData() << " to "<<e->getData() <<" exists"<<endl;
+            else {
+                print_path(s, e->parent);
+                cout<<e->getData() << endl;
+            }
         }
     private:
         NodeSeq nodes;
