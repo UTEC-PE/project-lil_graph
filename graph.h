@@ -155,7 +155,7 @@ class Graph {
                     node* v = (*ei)->nodes[1];
                     if(v->color == "WHITE") {
                         v->color = "GRAY";
-                        v->rank = u->rank + (*ei)->getWeight();
+                        v->rank = u->rank + 1;
                         v->parent = u;
                         cola.push(v);
                     }
@@ -202,6 +202,61 @@ class Graph {
             double d = e/(v*(v-1));
             if(dir) return d;
             else return 2*d;
+        }
+        bool bipartite(){
+            for(ni = nodes.begin(); ni != nodes.end(); ++ni){
+                (*ni)->parent = nullptr;
+                (*ni)->rank = 999999;
+                (*ni)->color="WHITE";
+            }
+            queue<node*> cola;
+            ni = nodes.begin();
+            (*ni)->parent = nullptr;
+            (*ni)->color =  "RED";
+            (*ni)->rank = 0;
+            cola.push(*ni);
+            while(!cola.empty()){
+                node* u = cola.front();
+                cola.pop();
+                if(u->rank % 2 == 0) {
+                    for(ei = u->edges.begin(); ei != u->edges.end(); ++ei) {
+                        node* v = (*ei)->nodes[1];
+                        if(v->color == "WHITE") {
+                            v->color = "BLUE";
+                            v->rank = u->rank + 1;
+                            cola.push(v);
+                        } else if (v->color == "RED" ) {
+                            return false;
+                        }
+                    }
+                } else {
+                    for(ei = u->edges.begin(); ei != u->edges.end(); ++ei) {
+                        node* v = (*ei)->nodes[1];
+                        if(v->color == "WHITE") {
+                            v->color = "RED";
+                            v->rank = u->rank + 1;
+                            cola.push(v);
+                        } else if (v->color == "BLUE" ) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        void print_edges(NodeSeq n){
+            ni= n.begin();
+            for(; ni != n.end(); ni++){
+                if((*ni)->parent != nullptr)
+                    cout<<"{"<<(*ni)->parent->getData()<<","<<(*ni)->getData()<<"}"<<endl;
+            }
+        }
+        void print_edges(){
+            ni = nodes.begin();
+            for(; ni != nodes.end(); ni++){
+                if((*ni)->parent != nullptr)
+                    cout<<"{"<<(*ni)->parent->getData()<<","<<(*ni)->getData()<<"}"<<endl;
+            }
         }
         ~Graph(){
 

@@ -38,14 +38,24 @@ int main(int argc, char *argv[]) {
         cout<<"{"<<(*it)->nodes[0]->getData()<<","<<(*it)->nodes[1]->getData()<<"}"<<endl;
     }
     cout<<"PRIM ALGORTIHM starting with A"<<endl;
-    a.Prim();
-    a.print_path(a.find_node('A'), a.find_node('H'));
+    a.print_edges(a.Prim());
+    //a.print_path(a.find_node('A'), a.find_node('H'));
     cout<<"BFS ALGORITHM starting with A"<<endl;
     a.BFS();
-    a.print_path(a.find_node('A'), a.find_node('H'));
+    a.print_edges(a.BFS());
+    //a.print_path(a.find_node('A'), a.find_node('H'));
     cout<<"DFS ALGORITHM starting with A"<<endl;
     a.DFS();
-    a.print_path(a.find_node('A'), a.find_node('E'));
+    a.print_edges();
+    //a.print_path(a.find_node('A'), a.find_node('E'));
+    cout<<"grafo a es bipartito ? "<<a.bipartite()<<endl;
+    graph b;
+    b.addNode('X');
+    b.addNode('Y');
+    b.addNode('Z');
+    b.addEdge('X','Y',false, 1);
+    b.addEdge('Y','Z',false, 1);
+    cout<<"grafo b es bipartito ? "<<b.bipartite();
 
     return 0;
 }
