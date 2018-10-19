@@ -45,7 +45,8 @@ public:
         node_->parent = current;
         return current;
     }
-    ~DisjointSet() {}
+    ~DisjointSet() {
+    }
 };
 
 #endif //GRAFO_PROYECTO_DISJOINT_H

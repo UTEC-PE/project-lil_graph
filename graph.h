@@ -162,6 +162,30 @@ class Graph {
                 }
                 u->color = "BLACK";
             }
+            return nodes;
+        }
+        void DFS() {
+            for(ni = nodes.begin(); ni != nodes.end(); ++ni) {
+                (*ni)->parent = nullptr;
+                (*ni)->color = "WHITE";
+            }
+            for(ni = nodes.begin(); ni != nodes.end(); ++ni) {
+               if ((*ni)->color == "WHITE") DFS(*ni);
+            }
+        }
+        void DFS(node* u){
+            u->color= "GRAY";
+            int size = u->edges.size();
+            for(int i = 0 ; i < size; i++) {
+                ei = u->edges.begin();
+                advance(ei,i);
+                node* v = (*ei)->nodes[1];
+                if(v->color == "WHITE") {
+                    v->parent = u;
+                    DFS(v);
+                }
+            }
+            u->color = "BLACK";
         }
         void print_path(node* s, node* e) {
             if(s == e) cout<< s->getData() <<endl;
@@ -171,6 +195,16 @@ class Graph {
                 print_path(s, e->parent);
                 cout<<e->getData() << endl;
             }
+        }
+        double density(bool dir) {
+            double e = edges.size();
+            double v = nodes.size();
+            double d = e/(v*(v-1));
+            if(dir) return d;
+            else return 2*d;
+        }
+        ~Graph(){
+
         }
     private:
         NodeSeq nodes;

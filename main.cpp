@@ -13,19 +13,39 @@ int main(int argc, char *argv[]) {
     a.addNode('D');
     a.addNode('E');
     a.addNode('F');
-    a.addEdge('A','B',false, 3);
-    a.addEdge('A','D',false, 2);
-    a.addEdge('A','E',false, 1);
-    a.addEdge('D','B',false, 4);
-    a.addEdge('D','E',false, 5);
-    a.addEdge('E','F',false, 9);
-    a.addEdge('B','C',false, 7);
+    a.addNode('G');
+    a.addNode('H');
+    a.addEdge('A','B',false, 2);
+    a.addEdge('A','C',false, 3);
+    a.addEdge('A','G',false, 15);
+    a.addEdge('B','C',false, 5);
+    a.addEdge('B','E',false, 7);
+    a.addEdge('B','G',false, 8);
+    a.addEdge('C','D',false, 4);
+    a.addEdge('C','E',false, 6);
     a.addEdge('D','F',false, 6);
-    a.addEdge('C','F',false, 8);
+    a.addEdge('E','F',false, 9);
+    a.addEdge('E','G',false, 7);
+    a.addEdge('F','G',false, 9);
+    a.addEdge('G','H',false, 1);
 
-    a.Kruskal();
+    cout<<"Density : "<<a.density(false)<<endl;
+
+    cout<<"KRUSKAL ALGORITHM"<<endl;
+    typedef list<Edge<Graph<Traits>>*> list;
+    list kruskal = a.Kruskal();
+    for(list::iterator it = kruskal.begin(); it != kruskal.end(); it++){
+        cout<<"{"<<(*it)->nodes[0]->getData()<<","<<(*it)->nodes[1]->getData()<<"}"<<endl;
+    }
+    cout<<"PRIM ALGORTIHM starting with A"<<endl;
     a.Prim();
-    a.print_path(a.find_node('A'), a.find_node('F'));
+    a.print_path(a.find_node('A'), a.find_node('H'));
+    cout<<"BFS ALGORITHM starting with A"<<endl;
+    a.BFS();
+    a.print_path(a.find_node('A'), a.find_node('H'));
+    cout<<"DFS ALGORITHM starting with A"<<endl;
+    a.DFS();
+    a.print_path(a.find_node('A'), a.find_node('E'));
 
     return 0;
 }
