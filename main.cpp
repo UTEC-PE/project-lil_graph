@@ -54,8 +54,10 @@ int main(int argc, char *argv[]) {
     b.addNode('Y');
     b.addNode('Z');
     b.addEdge('X','Y',false, 1);
-    b.addEdge('Y','Z',false, 1);
-    cout<<"grafo b es bipartito ? "<<b.bipartite();
+
+    cout<<"grafo b es bipartito ? "<<b.bipartite()<<endl;
+
+    cout<<"grafo b es conexo ? "<<b.isconnected();
 
     return 0;
 }

@@ -258,6 +258,15 @@ class Graph {
                     cout<<"{"<<(*ni)->parent->getData()<<","<<(*ni)->getData()<<"}"<<endl;
             }
         }
+        bool isconnected() {
+            NodeSeq nodes_ = BFS();
+            int contador = 0;
+            for(ni = nodes_.begin(); ni != nodes_.end(); ni++){
+                if((*ni)->parent== nullptr) contador++;
+                if(contador > 1) return false;
+            }
+            return true;
+        }
         ~Graph(){
 
         }
